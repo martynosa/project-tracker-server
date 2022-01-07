@@ -4,14 +4,22 @@ const itemSchema = new mongoose.Schema({
     name: {
         type: String,
     },
-    description: {
+    type: {
         type: String,
+        enum: ['personal', 'work']
     },
-    imageUrl: {
+    keywords: {
+        type: Array
+    },
+    description: {
         type: String,
     },
     toDos: {
         type: Object,
+    },
+    status: {
+        type: String,
+        enum: ['new', 'inProgress', 'completed']
     },
     ownerId: {
         type: mongoose.Types.ObjectId,

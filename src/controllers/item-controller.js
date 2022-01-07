@@ -10,7 +10,7 @@ const itemCreate = async (req, res) => {
     const item = { ...req.body }
     try {
         const createdItem = await services.createItem(item)
-        await authServices.addToCreatedItems(req.body.ownerId, createdItem._id)
+        await authServices.addToCreatedItems(req.user.id, createdItem._id)
         res.status(200).json({ createdItem })
     } catch (error) {
         res.status(500).json(error.message)
