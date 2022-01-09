@@ -67,12 +67,15 @@ const verifyToken = (token) => jwtVerify(token, SECRET)
 
 const addToCreatedItems = (userId, itemId) => userModel.findOneAndUpdate({ _id: userId }, { $push: { createdItems: itemId } })
 
+const getUser = (id) => userModel.findById(id).populate('createdItems').lean()
+
 const authServices = {
     registerUser,
     logUser,
     createToken,
     verifyToken,
-    addToCreatedItems
+    addToCreatedItems,
+    getUser
 }
 
 module.exports = authServices

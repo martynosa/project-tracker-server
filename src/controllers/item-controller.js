@@ -11,7 +11,7 @@ const itemCreate = async (req, res) => {
     try {
         const createdItem = await services.createItem(item)
         await authServices.addToCreatedItems(req.user.id, createdItem._id)
-        res.status(200).json({ createdItem })
+        res.status(200).json(createdItem)
     } catch (error) {
         res.status(500).json(error.message)
     }
@@ -30,8 +30,8 @@ const itemDelete = async (req, res) => {
 
 const getMyItems = async (req, res) => {
     try {
-        const myItems = await services.getMyItems(req.user.id)
-        res.status(200).json(myItems)
+        const user = await authServices.getUser(req.user.id)
+        res.status(200).json(user.createdItems)
     } catch (error) {
         res.status(500).json(error.message)
     }

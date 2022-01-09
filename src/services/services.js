@@ -1,7 +1,5 @@
 const itemModel = require('../config/models/item-model')
 
-const getMyItems = (ownerId) => itemModel.find({ ownerId: ownerId }).lean()
-
 const getSingleItem = (itemId) => itemModel.findById(itemId).lean()
 
 const createItem = (itemToCreate) => itemModel.create(itemToCreate)
@@ -23,7 +21,6 @@ const search = async (searchCriteria) => {
 };
 
 const services = {
-    getMyItems,
     getSingleItem,
     createItem,
     deleteItem,
