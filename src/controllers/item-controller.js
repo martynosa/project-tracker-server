@@ -20,8 +20,8 @@ const itemCreate = async (req, res) => {
 const itemDelete = async (req, res) => {
     const idToDelete = req.params.id
     try {
-        await services.deleteItem(idToDelete)
-        res.status(200).json('Deleted successfully!')
+        const deletedItem = await services.deleteItem(idToDelete)
+        res.status(200).json(deletedItem)
     } catch (error) {
         res.status(500).json(error.message)
     }
