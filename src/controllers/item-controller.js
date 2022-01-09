@@ -7,7 +7,7 @@ const middlewares = require('../services/middlewares')
 const router = express.Router()
 
 const itemCreate = async (req, res) => {
-    const item = { ...req.body }
+    const item = { ...req.body, ownerId: req.user.id }
     try {
         const createdItem = await services.createItem(item)
         await authServices.addToCreatedItems(req.user.id, createdItem._id)
@@ -28,10 +28,10 @@ const itemDelete = async (req, res) => {
     }
 }
 
-const getAllItems = async (req, res) => {
+const getMyItems = async (req, res) => {
     try {
-        const allItems = await services.getAllItems()
-        res.status(200).json({ allItems })
+        const myItems = await services.getMyItems(req.user.id)
+        res.status(200).json(myItems)
     } catch (error) {
         res.status(500).json(error.message)
     }
@@ -39,6 +39,6 @@ const getAllItems = async (req, res) => {
 
 router.post('/create', middlewares.isGuest, itemCreate)
 router.get('/:id/delete', middlewares.isGuest, middlewares.isOwner, itemDelete)
-router.get('/browse', getAllItems)
+router.get('/browse', getMyItems)
 
 module.exports = router
