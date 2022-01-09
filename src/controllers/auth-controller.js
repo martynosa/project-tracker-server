@@ -5,7 +5,6 @@ const router = express.Router()
 
 const registerUser = async (req, res) => {
     const userToRegister = req.body
-    console.log(userToRegister)
     try {
         await authServices.registerUser(userToRegister)
         const loggedUser = await authServices.logUser(userToRegister)
@@ -22,7 +21,6 @@ const registerUser = async (req, res) => {
 
 const logUser = async (req, res) => {
     const userToLog = req.body
-    console.log(userToLog)
     try {
         const loggedUser = await authServices.logUser(userToLog)
         const token = await authServices.createToken(loggedUser)
