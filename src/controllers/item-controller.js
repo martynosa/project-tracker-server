@@ -23,7 +23,6 @@ const itemDelete = async (req, res) => {
         await services.deleteItem(idToDelete)
         res.status(200).json('Deleted successfully!')
     } catch (error) {
-        console.log(error);
         res.status(500).json(error.message)
     }
 }
