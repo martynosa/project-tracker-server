@@ -27,6 +27,17 @@ const itemDelete = async (req, res) => {
     }
 }
 
+const itemUpdate = async (req, res) => {
+    const idToUpdate = req.params.id
+    const newItem = { ...req.body, ownerId: req.user.id }
+    try {
+        const updatedItem = await services.updateItem(idToUpdate, newItem)
+        res.status(200).json(updatedItem)
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+}
+
 const getMyItems = async (req, res) => {
     try {
         const user = await authServices.getUser(req.user.id)
@@ -38,6 +49,7 @@ const getMyItems = async (req, res) => {
 
 router.post('/create', middlewares.isGuest, itemCreate)
 router.get('/:id/delete', middlewares.isGuest, middlewares.isOwner, itemDelete)
+router.post('/:id/update', middlewares.isGuest, middlewares.isOwner, itemUpdate)
 router.get('/browse', getMyItems)
 
 module.exports = router

@@ -6,7 +6,7 @@ const createItem = (itemToCreate) => itemModel.create(itemToCreate)
 
 const deleteItem = (idToDelete) => itemModel.findByIdAndDelete(idToDelete)
 
-const editItem = (id, editedItem) => itemModel.findByIdAndUpdate(id, editedItem, { runValidators: true })
+const updateItem = (idToUpdate, newItem) => itemModel.findByIdAndUpdate(idToUpdate, newItem, { runValidators: true })
 
 //! shows duplicates
 const search = async (searchCriteria) => {
@@ -24,7 +24,7 @@ const services = {
     getSingleItem,
     createItem,
     deleteItem,
-    editItem,
+    updateItem,
     search
 }
 
