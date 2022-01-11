@@ -19,7 +19,7 @@ const itemSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['new', 'inProgress', 'completed']
+        enum: ['new', 'inProgress', 'completed', 'archived']
     },
     ownerId: {
         type: mongoose.Types.ObjectId,
