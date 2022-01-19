@@ -17,6 +17,24 @@ const itemCreate = async (req, res) => {
     }
 }
 
+const getSingleItem = async (req, res) => {
+    try {
+        const item = await services.getSingleItem(req.params.id)
+        res.status(200).json(item)
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+}
+
+const getMyItems = async (req, res) => {
+    try {
+        const user = await authServices.getUser(req.user.id)
+        res.status(200).json(user.createdItems)
+    } catch (error) {
+        res.status(500).json(error.message)
+    }
+}
+
 const itemDelete = async (req, res) => {
     const idToDelete = req.params.id
     try {
@@ -38,18 +56,10 @@ const itemUpdate = async (req, res) => {
     }
 }
 
-const getMyItems = async (req, res) => {
-    try {
-        const user = await authServices.getUser(req.user.id)
-        res.status(200).json(user.createdItems)
-    } catch (error) {
-        res.status(500).json(error.message)
-    }
-}
-
+router.get('/browse', middlewares.isGuest, getMyItems)
 router.post('/create', middlewares.isGuest, itemCreate)
+router.get('/:id', middlewares.isGuest, middlewares.isOwner, getSingleItem)
 router.get('/:id/delete', middlewares.isGuest, middlewares.isOwner, itemDelete)
 router.post('/:id/update', middlewares.isGuest, middlewares.isOwner, itemUpdate)
-router.get('/browse', getMyItems)
 
 module.exports = router

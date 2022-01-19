@@ -32,8 +32,8 @@ const isGuest = (req, res, next) => {
 const isOwner = async (req, res, next) => {
     const itemId = req.params.id
     try {
-        const itemToEdit = await services.getSingleItem(itemId)
-        if (req.user.id != itemToEdit.ownerId) {
+        const item = await services.getSingleItem(itemId)
+        if (req.user.id != item.ownerId) {
             return res.status(500).json('Not authorized!')
         }
         next()

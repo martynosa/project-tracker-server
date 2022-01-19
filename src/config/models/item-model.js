@@ -14,8 +14,8 @@ const itemSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    toDos: {
-        type: Object,
+    tasks: {
+        type: Array,
     },
     status: {
         type: String,
