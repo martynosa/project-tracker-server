@@ -4,10 +4,6 @@ const itemSchema = new mongoose.Schema({
     name: {
         type: String,
     },
-    type: {
-        type: String,
-        enum: ['personal', 'work']
-    },
     keywords: {
         type: Array
     },
