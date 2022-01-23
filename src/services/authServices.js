@@ -7,14 +7,10 @@ const jwtVerify = util.promisify(jwt.verify)
 const SECRET = 'E76F271A235932E37DE68AF7E4E3D'
 
 const registerUser = async (userToRegister) => {
-    const { username, fullName, password, rePassword } = userToRegister
+    const { username, password, rePassword } = userToRegister
 
     if (!username || username.trim() === '' || username.length < 3) {
         throw ('Username must be 3 characters or more!')
-    }
-
-    if (!fullName || fullName.trim() === '') {
-        throw ('Full Name is required!')
     }
 
     if (!password || password.trim() === '' || password.length < 5) {
