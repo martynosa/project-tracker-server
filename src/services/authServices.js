@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const jwtSign = util.promisify(jwt.sign)
 const jwtVerify = util.promisify(jwt.verify)
-const SECRET = 'E76F271A235932E37DE68AF7E4E3D'
+const SECRET = '435C846394A839FF96CF9E1BEBF99'
 
 const registerUser = async (userToRegister) => {
     const { username, password, rePassword } = userToRegister
