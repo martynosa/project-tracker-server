@@ -9,11 +9,11 @@ const SECRET = '435C846394A839FF96CF9E1BEBF99'
 const registerUser = async (userToRegister) => {
     const { username, password, rePassword } = userToRegister
 
-    if (!username || username.trim() === '' || username.length < 3) {
-        throw ('Username must be 3 characters or more!')
+    if (!username || username.trim() === '' || username.length < 4) {
+        throw ('Username must be 4 characters or more!')
     }
 
-    if (!password || password.trim() === '' || password.length < 5) {
+    if (!password || password.trim() === '' || password.length < 6) {
         throw ('Password must be 5 characters or more!')
     }
 
