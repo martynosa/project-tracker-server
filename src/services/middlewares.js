@@ -11,7 +11,6 @@ const auth = async (req, res, next) => {
 
     try {
         const decodedToken = await authServices.verifyToken(token)
-        console.log(decodedToken)
         req.user = decodedToken
         next()
     } catch (error) {
