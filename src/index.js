@@ -4,11 +4,12 @@ const initMongoose = require('./config/mongoose-config')
 const middlewares = require('./services/middlewares')
 const router = require('./router')
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000
 
-const app = express();
+const app = express()
 
-app.use(express.json());
+app.use(express.json())
+
 //CORS
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
