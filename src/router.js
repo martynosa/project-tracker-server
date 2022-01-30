@@ -7,4 +7,4 @@ const router = express.Router()
 router.use('/auth', authController)
 router.use('/item', itemController)
 
-module.exports = router;
+module.exports = router

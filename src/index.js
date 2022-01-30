@@ -1,5 +1,5 @@
 const express = require('express')
-const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser')
 const initMongoose = require('./config/mongoose-config')
 const middlewares = require('./services/middlewares')
 const router = require('./router')
