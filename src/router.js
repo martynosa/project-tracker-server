@@ -6,5 +6,8 @@ const router = express.Router()
 
 router.use('/auth', authController)
 router.use('/item', itemController)
+router.use('*', (req, res) => {
+    res.send('404')
+})
 
 module.exports = router
