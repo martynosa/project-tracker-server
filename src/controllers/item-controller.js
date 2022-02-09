@@ -56,10 +56,10 @@ const itemUpdate = async (req, res) => {
     }
 }
 
-router.get('/browse', middlewares.isGuest, getMyItems)
-router.post('/create', middlewares.isGuest, itemCreate)
+router.get('/', middlewares.isGuest, getMyItems)
+router.post('/', middlewares.isGuest, itemCreate)
 router.get('/:id', middlewares.isGuest, middlewares.isOwner, getSingleItem)
-router.get('/:id/delete', middlewares.isGuest, middlewares.isOwner, itemDelete)
-router.post('/:id/update', middlewares.isGuest, middlewares.isOwner, itemUpdate)
+router.delete('/:id', middlewares.isGuest, middlewares.isOwner, itemDelete)
+router.put('/:id', middlewares.isGuest, middlewares.isOwner, itemUpdate)
 
 module.exports = router

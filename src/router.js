@@ -5,7 +5,7 @@ const itemController = require('./controllers/item-controller')
 const router = express.Router()
 
 router.use('/auth', authController)
-router.use('/item', itemController)
+router.use('/items', itemController)
 router.use('*', (req, res) => {
     res.send('404')
 })
