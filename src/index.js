@@ -25,4 +25,3 @@ app.use(router)
 initMongoose()
     .then(() => app.listen(PORT, () => console.log(`listening on ${PORT}...`)))
     .catch(error => console.log('mongoose failed:' + error))
-
