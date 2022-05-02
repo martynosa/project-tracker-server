@@ -13,9 +13,9 @@ const app = express()
 app.use(express.json())
 //CORS
 app.use((req, res, next) => {
-    process.env.NODE_ENV === 'development'
-        ? res.setHeader('Access-Control-Allow-Origin', '*')
-        : res.setHeader('Access-Control-Allow-Origin', 'https://martynosa-project-tracker.netlify.app')
+    process.env.NODE_ENV === 'production'
+        ? res.setHeader('Access-Control-Allow-Origin', 'https://martynosa-project-tracker.netlify.app')
+        : res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, DELETE')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token')
     next()
