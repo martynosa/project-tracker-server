@@ -1,4 +1,5 @@
 const express = require('express')
+const dotenv = require('dotenv')
 const cookieParser = require('cookie-parser')
 const initMongoose = require('./config/mongoose-config')
 const middlewares = require('./services/middlewares')
@@ -7,13 +8,14 @@ const router = require('./router')
 const PORT = process.env.PORT || 5000
 
 const app = express()
+dotenv.config({ path: "./config.env" })
 
 app.use(express.json())
-
 //CORS
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://martynosa-project-tracker.netlify.app')
-    res.setHeader('Access-Control-Allow-Origin', '*')
+    process.env.NODE_ENV === 'development'
+        ? res.setHeader('Access-Control-Allow-Origin', '*')
+        : res.setHeader('Access-Control-Allow-Origin', 'https://martynosa-project-tracker.netlify.app')
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, DELETE')
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token')
     next()
@@ -23,5 +25,5 @@ app.use(middlewares.auth)
 app.use(router)
 
 initMongoose()
-    .then(() => app.listen(PORT, () => console.log(`listening on ${PORT}...`)))
+    .then(() => app.listen(PORT, () => console.log(`env = ${app.get('env')} and listening on ${PORT}...`)))
     .catch(error => console.log('mongoose failed:' + error))

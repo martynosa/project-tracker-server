@@ -55,11 +55,11 @@ const createToken = async (user) => {
         username: username
     }
 
-    const token = await jwtSign(payload, SECRET)
+    const token = await jwtSign(payload, process.env.SECRET)
     return token
 }
 
-const verifyToken = (token) => jwtVerify(token, SECRET)
+const verifyToken = (token) => jwtVerify(token, process.env.SECRET)
 
 const addToCreatedItems = (userId, itemId) => userModel.findOneAndUpdate({ _id: userId }, { $push: { createdItems: itemId } })
 
