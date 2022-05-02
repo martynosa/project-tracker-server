@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken')
 
 const jwtSign = util.promisify(jwt.sign)
 const jwtVerify = util.promisify(jwt.verify)
-const SECRET = '435C846394A839FF96CF9E1BEBF99'
 
 const registerUser = async (userToRegister) => {
     const { username, password, rePassword } = userToRegister
@@ -54,7 +53,6 @@ const createToken = async (user) => {
         id: _id,
         username: username
     }
-
     const token = await jwtSign(payload, process.env.SECRET)
     return token
 }

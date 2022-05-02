@@ -7,8 +7,8 @@ const router = require('./router')
 
 const PORT = process.env.PORT || 5000
 
+dotenv.config({ path: 'src/config.env' })
 const app = express()
-dotenv.config({ path: "./config.env" })
 
 app.use(express.json())
 //CORS
@@ -25,5 +25,5 @@ app.use(middlewares.auth)
 app.use(router)
 
 initMongoose()
-    .then(() => app.listen(PORT, () => console.log(`env = ${app.get('env')} and listening on ${PORT}...`)))
+    .then(() => app.listen(PORT, () => console.log(`env = ${process.env.NODE_ENV} and listening on ${PORT}...`)))
     .catch(error => console.log('mongoose failed:' + error))
