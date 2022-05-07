@@ -9,12 +9,6 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
     },
-    createdItems: [
-        {
-            type: mongoose.Types.ObjectId,
-            ref: 'item'
-        }
-    ]
 })
 
 //hashes the password

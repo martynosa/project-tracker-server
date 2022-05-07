@@ -43,8 +43,7 @@ const registerUser = async (req, res) => {
         await authServices.registerUser(userToRegister)
         const loggedUser = await authServices.logUser(userToRegister)
         const token = await authServices.createToken(loggedUser)
-        const createdItem = await services.createItem({ ...defaultProject, ownerId: loggedUser._id })
-        await authServices.addToCreatedItems(loggedUser._id, createdItem._id)
+        await services.createItem({ ...defaultProject, ownerId: loggedUser._id })
         res.status(200).json({
             id: loggedUser._id,
             username: loggedUser.username,

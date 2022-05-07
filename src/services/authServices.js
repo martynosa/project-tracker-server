@@ -59,8 +59,6 @@ const createToken = async (user) => {
 
 const verifyToken = (token) => jwtVerify(token, process.env.SECRET)
 
-const addToCreatedItems = (userId, itemId) => userModel.findOneAndUpdate({ _id: userId }, { $push: { createdItems: itemId } })
-
 const getUser = (id) => userModel.findById(id).populate('createdItems').lean()
 
 const authServices = {
@@ -68,7 +66,6 @@ const authServices = {
     logUser,
     createToken,
     verifyToken,
-    addToCreatedItems,
     getUser
 }
 

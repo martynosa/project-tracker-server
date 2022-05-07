@@ -1,5 +1,7 @@
 const itemModel = require('../config/models/item-model')
 
+const getMyItems = (userId) => itemModel.find({ ownerId: userId })
+
 const getSingleItem = (itemId) => itemModel.findById(itemId).lean()
 
 const createItem = (itemToCreate) => itemModel.create(itemToCreate)
@@ -10,6 +12,7 @@ const updateItem = (idToUpdate, newItem) => itemModel.findByIdAndUpdate(idToUpda
 
 const services = {
     getSingleItem,
+    getMyItems,
     createItem,
     deleteItem,
     updateItem,
