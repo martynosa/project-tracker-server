@@ -1,28 +1,31 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const itemSchema = new mongoose.Schema({
+const itemSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
+      type: String,
     },
     keywords: {
-        type: Array
+      type: Array,
     },
     description: {
-        type: String,
+      type: String,
     },
     tasks: {
-        type: Array,
+      type: Array,
     },
     status: {
-        type: String,
-        enum: ['new', 'inProgress', 'completed']
+      type: String,
+      enum: ['new', 'inProgress', 'completed'],
     },
     ownerId: {
-        type: mongoose.Types.ObjectId,
-        ref: 'user'
-    }
-}, { timestamps: true })
+      type: mongoose.Types.ObjectId,
+      ref: 'user',
+    },
+  },
+  { timestamps: true }
+);
 
-const itemModel = mongoose.model('item', itemSchema)
+const itemModel = mongoose.model('item', itemSchema);
 
-module.exports = itemModel
+module.exports = itemModel;
