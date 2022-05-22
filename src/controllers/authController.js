@@ -62,7 +62,7 @@ const registerUser = async (req, res) => {
     });
   } catch (error) {
     const message = mongoErrorHandler(error);
-    res.status(500).json(message);
+    res.status(500).json({ status: 'Error', message });
   }
 };
 
@@ -81,13 +81,17 @@ const logUser = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json(error);
+    const message = mongoErrorHandler(error);
+    res.status(500).json({ status: 'Error', message });
   }
 };
 
 const profilePhoto = async (req, res) => {
   if (!req.file) {
-    return res.status(500).json('Not an image file or no file chosen!');
+    return res.status(500).json({
+      status: 'Error',
+      message: 'Not an image file or no file chosen!',
+    });
   }
   try {
     const updatedUser = await authServices.updateUser(req.user.id, {
@@ -95,7 +99,8 @@ const profilePhoto = async (req, res) => {
     });
     res.status(200).json({ status: 'Success', data: updatedUser });
   } catch (error) {
-    res.status(500).json(error);
+    const message = mongoErrorHandler(error);
+    res.status(500).json({ status: 'Error', message });
   }
 };
 
