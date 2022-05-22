@@ -1,4 +1,4 @@
-const userModel = require('../config/models/user-model');
+const userModel = require('../config/models/userModel');
 const util = require('util');
 const jwt = require('jsonwebtoken');
 
@@ -6,40 +6,16 @@ const jwtSign = util.promisify(jwt.sign);
 const jwtVerify = util.promisify(jwt.verify);
 
 const registerUser = async (userToRegister) => {
-  const { username, password, rePassword } = userToRegister;
-
-  if (!username || username.trim() === '' || username.length < 4) {
-    throw 'Username must be 4 characters or more!';
-  }
-
-  if (!password || password.trim() === '' || password.length < 6) {
-    throw 'Password must be 5 characters or more!';
-  }
-
-  if (!rePassword || rePassword.trim() === '' || password !== rePassword) {
-    throw 'Password and Repeat Password must be identical!';
-  }
-
-  try {
-    await userModel.create(userToRegister);
-  } catch (error) {
-    throw 'Try different Username or there might be an issue with our servers!';
-  }
+  await userModel.create(userToRegister);
 };
 
 const logUser = async (userToLog) => {
   const { username, password } = userToLog;
   const user = await userModel.findOne({ username });
-  if (!user) {
+  if (!user || !password) {
     throw 'Username or Password are invalid!';
   }
-
-  if (!password) {
-    throw 'Username or Password are invalid!';
-  }
-
   const isValid = await user.validatePassword(password);
-
   if (!isValid) {
     throw 'Username or Password are invalid!';
   }
@@ -48,7 +24,6 @@ const logUser = async (userToLog) => {
 
 const createToken = async (user) => {
   const { _id, username } = user;
-
   const payload = {
     id: _id,
     username: username,
@@ -61,12 +36,16 @@ const verifyToken = (token) => jwtVerify(token, process.env.SECRET);
 
 const getUser = (id) => userModel.findById(id).populate('createdItems').lean();
 
+const updateUser = (id, updatedUser) =>
+  userModel.findByIdAndUpdate(id, updatedUser);
+
 const authServices = {
   registerUser,
   logUser,
   createToken,
   verifyToken,
   getUser,
+  updateUser,
 };
 
 module.exports = authServices;

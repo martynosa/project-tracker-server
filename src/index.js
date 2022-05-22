@@ -1,7 +1,8 @@
 const express = require('express');
+const path = require('path');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
-const initMongoose = require('./config/mongoose-config');
+const initMongoose = require('./config/mongooseConfig');
 const middlewares = require('./services/middlewares');
 const router = require('./router');
 
@@ -11,6 +12,7 @@ dotenv.config({ path: 'src/config.env' });
 const app = express();
 
 app.use(express.json());
+app.use(express.static(path.resolve(__dirname, './public')));
 //CORS
 app.use((req, res, next) => {
   process.env.NODE_ENV === 'production'

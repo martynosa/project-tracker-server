@@ -5,9 +5,27 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
+    required: [true, 'Username is required!'],
+    minlength: [4, 'Username with 4 or more characters required!'],
   },
   password: {
     type: String,
+    required: [true, 'Password is required!'],
+    minlength: [6, 'Password with 6 or more characters required!'],
+  },
+  rePassword: {
+    type: String,
+    required: [true, 'Repeat Password is required!'],
+    validate: {
+      validator: function (el) {
+        return el === this.password;
+      },
+      message: 'Password and Repeat password must be identical!',
+    },
+  },
+  photo: {
+    type: String,
+    default: 'default.jpg',
   },
 });
 

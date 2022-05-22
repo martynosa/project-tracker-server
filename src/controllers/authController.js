@@ -1,6 +1,9 @@
 const express = require('express');
 const authServices = require('../services/authServices');
-const services = require('../services/services');
+const itemServices = require('../services/itemServices');
+const middlewares = require('../services/middlewares');
+const uploadProfilePhoto = require('../config/multerConfig');
+const mongoErrorHandler = require('../services/errorServices');
 
 const router = express.Router();
 
@@ -44,14 +47,22 @@ const registerUser = async (req, res) => {
     await authServices.registerUser(userToRegister);
     const loggedUser = await authServices.logUser(userToRegister);
     const token = await authServices.createToken(loggedUser);
-    await services.createItem({ ...defaultProject, ownerId: loggedUser._id });
+    await itemServices.createItem({
+      ...defaultProject,
+      ownerId: loggedUser._id,
+    });
     res.status(200).json({
-      id: loggedUser._id,
-      username: loggedUser.username,
-      token: token,
+      status: 'Success',
+      data: {
+        id: loggedUser._id,
+        username: loggedUser.username,
+        photo: loggedUser.photo,
+        token: token,
+      },
     });
   } catch (error) {
-    res.status(500).json(error);
+    const message = mongoErrorHandler(error);
+    res.status(500).json(message);
   }
 };
 
@@ -61,10 +72,28 @@ const logUser = async (req, res) => {
     const loggedUser = await authServices.logUser(userToLog);
     const token = await authServices.createToken(loggedUser);
     res.status(200).json({
-      id: loggedUser._id,
-      username: loggedUser.username,
-      token: token,
+      status: 'Success',
+      data: {
+        id: loggedUser._id,
+        username: loggedUser.username,
+        photo: loggedUser.photo,
+        token: token,
+      },
     });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+const profilePhoto = async (req, res) => {
+  if (!req.file) {
+    return res.status(500).json('Not an image file or no file chosen!');
+  }
+  try {
+    const updatedUser = await authServices.updateUser(req.user.id, {
+      photo: req.file.filename,
+    });
+    res.status(200).json({ status: 'Success', data: updatedUser });
   } catch (error) {
     res.status(500).json(error);
   }
@@ -72,5 +101,11 @@ const logUser = async (req, res) => {
 
 router.post('/register', registerUser);
 router.post('/login', logUser);
+router.post(
+  '/uploadPhoto',
+  middlewares.isGuest,
+  uploadProfilePhoto,
+  profilePhoto
+);
 
 module.exports = router;

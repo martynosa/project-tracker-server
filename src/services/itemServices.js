@@ -1,17 +1,20 @@
-const itemModel = require('../config/models/item-model');
+const itemModel = require('../config/models/itemModel');
 
 const getMyItems = (userId) => itemModel.find({ ownerId: userId });
 
-const getSingleItem = (itemId) => itemModel.findById(itemId).lean();
+const getSingleItem = (itemId) => itemModel.findById(itemId);
 
 const createItem = (itemToCreate) => itemModel.create(itemToCreate);
 
 const deleteItem = (idToDelete) => itemModel.findByIdAndDelete(idToDelete);
 
 const updateItem = (idToUpdate, newItem) =>
-  itemModel.findByIdAndUpdate(idToUpdate, newItem, { runValidators: true });
+  itemModel.findByIdAndUpdate(idToUpdate, newItem, {
+    runValidators: true,
+    new: true,
+  });
 
-const services = {
+const itemServices = {
   getSingleItem,
   getMyItems,
   createItem,
@@ -19,4 +22,4 @@ const services = {
   updateItem,
 };
 
-module.exports = services;
+module.exports = itemServices;
