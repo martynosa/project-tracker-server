@@ -1,4 +1,5 @@
 const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
 
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -6,7 +7,7 @@ const multerStorage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const ext = file.mimetype.split('/')[1];
-    cb(null, `${req.user.username}-${Date.now().toString()}.${ext}`);
+    cb(null, `${req.user.username}-${uuidv4()}.${ext}`);
   },
 });
 
