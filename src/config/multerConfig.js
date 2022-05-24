@@ -6,7 +6,7 @@ const multerStorage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     const ext = file.mimetype.split('/')[1];
-    cb(null, `${req.user.username}.${ext}`);
+    cb(null, `${req.user.username}-${Date.now().toString()}.${ext}`);
   },
 });
 

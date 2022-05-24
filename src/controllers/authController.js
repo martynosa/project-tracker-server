@@ -97,7 +97,10 @@ const profilePhoto = async (req, res) => {
     const updatedUser = await authServices.updateUser(req.user.id, {
       photo: req.file.filename,
     });
-    res.status(200).json({ status: 'Success', data: updatedUser });
+    res.status(200).json({
+      status: 'Success',
+      data: updatedUser.photo,
+    });
   } catch (error) {
     const message = mongoErrorHandler(error);
     res.status(500).json({ status: 'Error', message });

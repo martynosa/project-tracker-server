@@ -30,11 +30,12 @@ const userSchema = new mongoose.Schema({
 });
 
 //hashes the password
-userSchema.pre('save', function (next) {
-  bcrypt.hash(this.password, 10).then((hash) => {
-    this.password = hash;
-    next();
-  });
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+
+  this.password = await bcrypt.hash(this.password, 12);
+  this.rePassword = undefined;
+  next();
 });
 
 //validates the password

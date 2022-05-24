@@ -37,7 +37,7 @@ const verifyToken = (token) => jwtVerify(token, process.env.SECRET);
 const getUser = (id) => userModel.findById(id).populate('createdItems').lean();
 
 const updateUser = (id, updatedUser) =>
-  userModel.findByIdAndUpdate(id, updatedUser);
+  userModel.findByIdAndUpdate(id, updatedUser, { new: true });
 
 const authServices = {
   registerUser,
