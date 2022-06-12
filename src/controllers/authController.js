@@ -4,6 +4,7 @@ const itemServices = require('../services/itemServices');
 const middlewares = require('../services/middlewares');
 const uploadProfilePhoto = require('../config/multerConfig');
 const mongoErrorHandler = require('../services/errorServices');
+const multerServices = require('../config/multerConfig');
 
 const router = express.Router();
 
@@ -112,7 +113,8 @@ router.post('/login', logUser);
 router.post(
   '/uploadPhoto',
   middlewares.isGuest,
-  uploadProfilePhoto,
+  multerServices.uploadProfilePhoto,
+  multerServices.resizeProfilePhoto,
   profilePhoto
 );
 
