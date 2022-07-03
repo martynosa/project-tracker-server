@@ -86,7 +86,6 @@ const itemUpdate = async (req, res) => {
 router.get('/', middlewares.isGuest, getMyItems);
 router.post('/', middlewares.isGuest, itemCreate);
 router.get('/:id', middlewares.isGuest, getSingleItem);
-router.get('/:id', getSingleItem);
 router.delete('/:id', middlewares.isGuest, itemDelete);
 router.put('/:id', middlewares.isGuest, itemUpdate);
 
