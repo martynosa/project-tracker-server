@@ -90,6 +90,7 @@ const updatePassword = async (req, res, next) => {
 
 router.post('/register', registerUser);
 router.post('/login', logUser);
+router.patch('/updatePassword', middlewares.isGuest, updatePassword);
 router.post(
   '/uploadPhoto',
   middlewares.isGuest,
@@ -97,7 +98,5 @@ router.post(
   multerServices.resizeProfilePhoto,
   profilePhoto
 );
-
-router.post('/updatePassword', middlewares.isGuest, updatePassword);
 
 module.exports = router;
