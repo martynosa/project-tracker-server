@@ -2,13 +2,12 @@ const express = require('express');
 const authServices = require('../services/authServices');
 const itemServices = require('../services/itemServices');
 const middlewares = require('../services/middlewares');
-const mongoErrorHandler = require('../services/errorServices');
 const multerServices = require('../config/multerConfig');
 const defaultProject = require('../helpers/defaultProject');
 
 const router = express.Router();
 
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   const userToRegister = req.body;
   try {
     await authServices.registerUser(userToRegister);
@@ -28,13 +27,11 @@ const registerUser = async (req, res) => {
       },
     });
   } catch (error) {
-    const message = mongoErrorHandler(error);
-    console.log(error);
-    res.status(500).json({ status: 'Error', message });
+    next(error);
   }
 };
 
-const logUser = async (req, res) => {
+const logUser = async (req, res, next) => {
   const userToLog = req.body;
   try {
     const loggedUser = await authServices.logUser(userToLog);
@@ -49,12 +46,11 @@ const logUser = async (req, res) => {
       },
     });
   } catch (error) {
-    const message = mongoErrorHandler(error);
-    res.status(500).json({ status: 'Error', message });
+    next(error);
   }
 };
 
-const profilePhoto = async (req, res) => {
+const profilePhoto = async (req, res, next) => {
   if (!req.file) {
     return res.status(500).json({
       status: 'Error',
@@ -70,8 +66,7 @@ const profilePhoto = async (req, res) => {
       data: updatedUser.photo,
     });
   } catch (error) {
-    const message = mongoErrorHandler(error);
-    res.status(500).json({ status: 'Error', message });
+    next(error);
   }
 };
 

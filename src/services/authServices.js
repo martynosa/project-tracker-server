@@ -1,6 +1,7 @@
 const userModel = require('../config/models/userModel');
 const util = require('util');
 const jwt = require('jsonwebtoken');
+const AppError = require('./errors/AppError');
 
 const jwtSign = util.promisify(jwt.sign);
 const jwtVerify = util.promisify(jwt.verify);
@@ -13,11 +14,11 @@ const logUser = async (userToLog) => {
   const { email, password } = userToLog;
   const user = await userModel.findOne({ email });
   if (!user || !password) {
-    throw 'Email or Password are invalid!';
+    throw new AppError('Email or Password are invalid!', 401);
   }
   const isValid = await user.validatePassword(password);
   if (!isValid) {
-    throw 'Email or Password are invalid!';
+    throw new AppError('Email or Password are invalid!', 401);
   }
   return user;
 };
