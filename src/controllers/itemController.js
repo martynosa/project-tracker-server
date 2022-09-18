@@ -8,10 +8,7 @@ const itemCreate = async (req, res, next) => {
   const item = { ...req.body, ownerId: req.user.id };
   try {
     const createdItem = await itemServices.createItem(item);
-    res.status(200).json({
-      status: 'Success',
-      data: createdItem,
-    });
+    res.status(201).json({ status: 'success', data: createdItem });
   } catch (error) {
     next(error);
   }
@@ -20,10 +17,7 @@ const itemCreate = async (req, res, next) => {
 const getSingleItem = async (req, res, next) => {
   try {
     const item = await itemServices.getSingleItem(req.params.id);
-    res.status(200).json({
-      status: 'Success',
-      data: item,
-    });
+    res.status(200).json({ status: 'success', data: item });
   } catch (error) {
     next(error);
   }
@@ -32,7 +26,7 @@ const getSingleItem = async (req, res, next) => {
 const getMyItems = async (req, res) => {
   try {
     const items = await itemServices.getMyItems(req.user.id);
-    res.status(200).json({ status: 'Success', data: items });
+    res.status(200).json({ status: 'success', data: items });
   } catch (error) {
     next(error);
   }
@@ -40,11 +34,8 @@ const getMyItems = async (req, res) => {
 
 const itemDelete = async (req, res) => {
   try {
-    const deletedItem = await itemServices.deleteItem(req.params.id);
-    res.status(200).json({
-      status: 'Success',
-      data: deletedItem,
-    });
+    await itemServices.deleteItem(req.params.id);
+    res.status(204).json({ status: 'success' });
   } catch (error) {
     next(error);
   }

@@ -17,8 +17,8 @@ const registerUser = async (req, res, next) => {
       ...defaultProject,
       ownerId: loggedUser._id,
     });
-    res.status(200).json({
-      status: 'Success',
+    res.status(201).json({
+      status: 'success',
       data: {
         id: loggedUser._id,
         email: loggedUser.email,
@@ -37,7 +37,7 @@ const logUser = async (req, res, next) => {
     const loggedUser = await authServices.logUser(userToLog);
     const token = await authServices.createToken(loggedUser);
     res.status(200).json({
-      status: 'Success',
+      status: 'success',
       data: {
         id: loggedUser._id,
         email: loggedUser.email,
@@ -52,19 +52,28 @@ const logUser = async (req, res, next) => {
 
 const profilePhoto = async (req, res, next) => {
   if (!req.file) {
-    return res.status(500).json({
-      status: 'Error',
-      message: 'Not an image file or no file chosen!',
-    });
+    next('Not an image file or no file chosen!', 415);
   }
   try {
     const updatedUser = await authServices.updateUser(req.user.id, {
       photo: req.file.filename,
     });
     res.status(200).json({
-      status: 'Success',
+      status: 'success',
       data: updatedUser.photo,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updatePassword = async (req, res, next) => {
+  const userId = req.user.id;
+  const passwords = req.body;
+
+  try {
+    await authServices.updatePassword(userId, passwords);
+    res.status(204).json({ status: 'success' });
   } catch (error) {
     next(error);
   }
@@ -79,5 +88,7 @@ router.post(
   multerServices.resizeProfilePhoto,
   profilePhoto
 );
+
+router.post('/updatePassword', middlewares.isGuest, updatePassword);
 
 module.exports = router;

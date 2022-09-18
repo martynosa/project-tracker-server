@@ -35,10 +35,27 @@ const createToken = async (user) => {
 
 const verifyToken = (token) => jwtVerify(token, process.env.SECRET);
 
-const getUser = (id) => userModel.findById(id).populate('createdItems');
+const getUser = (id) => userModel.findById(id);
 
 const updateUser = (id, updatedUser) =>
   userModel.findByIdAndUpdate(id, updatedUser, { new: true });
+
+const updatePassword = async (id, passwords) => {
+  const { password, newPassword, newRePassword } = passwords;
+  const user = await userModel.findById(id);
+  if (!user) {
+    throw new AppError('User is invalid', 404);
+  }
+
+  const isValid = await user.validatePassword(password);
+  if (!isValid) {
+    throw new AppError('Password is invalid!', 401);
+  }
+
+  user.password = newPassword;
+  user.rePassword = newRePassword;
+  user.save();
+};
 
 const authServices = {
   registerUser,
@@ -47,6 +64,7 @@ const authServices = {
   verifyToken,
   getUser,
   updateUser,
+  updatePassword,
 };
 
 module.exports = authServices;
