@@ -70,10 +70,19 @@ const profilePhoto = async (req, res, next) => {
 const updatePassword = async (req, res, next) => {
   const userId = req.user.id;
   const passwords = req.body;
-
   try {
-    await authServices.updatePassword(userId, passwords);
-    res.status(204).json({ status: 'success' });
+    const userToLog = await authServices.updatePassword(userId, passwords);
+    const loggedUser = await authServices.logUser(userToLog);
+    const token = await authServices.createToken(loggedUser);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        id: loggedUser._id,
+        email: loggedUser.email,
+        photo: loggedUser.photo,
+        token: token,
+      },
+    });
   } catch (error) {
     next(error);
   }

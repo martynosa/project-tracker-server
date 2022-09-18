@@ -54,7 +54,8 @@ const updatePassword = async (id, passwords) => {
 
   user.password = newPassword;
   user.rePassword = newRePassword;
-  user.save();
+  await user.save();
+  return { email: user.email, password: newPassword };
 };
 
 const authServices = {
