@@ -31,6 +31,7 @@ const itemSchema = new mongoose.Schema(
         values: ['new', 'inProgress', 'completed'],
         message: 'Valid statuses: new, inProgress, completed',
       },
+      default: 'new',
     },
     ownerId: {
       type: mongoose.Types.ObjectId,

@@ -1,11 +1,10 @@
 const express = require('express');
 const itemServices = require('../services/itemServices');
 const middlewares = require('../services/middlewares');
-const mongoErrorHandler = require('../services/errorServices');
 
 const router = express.Router();
 
-const itemCreate = async (req, res) => {
+const itemCreate = async (req, res, next) => {
   const item = { ...req.body, ownerId: req.user.id };
   try {
     const createdItem = await itemServices.createItem(item);
@@ -14,26 +13,19 @@ const itemCreate = async (req, res) => {
       data: createdItem,
     });
   } catch (error) {
-    const message = mongoErrorHandler(error);
-    res.status(500).json({ status: 'Error', message });
+    next(error);
   }
 };
 
-const getSingleItem = async (req, res) => {
+const getSingleItem = async (req, res, next) => {
   try {
     const item = await itemServices.getSingleItem(req.params.id);
-    if (req.user.id != item.ownerId) {
-      return res
-        .status(500)
-        .json({ status: 'Error', message: 'Not authorized!' });
-    }
     res.status(200).json({
       status: 'Success',
       data: item,
     });
   } catch (error) {
-    const message = mongoErrorHandler(error);
-    res.status(500).json({ status: 'Error', message });
+    next(error);
   }
 };
 
@@ -42,51 +34,30 @@ const getMyItems = async (req, res) => {
     const items = await itemServices.getMyItems(req.user.id);
     res.status(200).json({ status: 'Success', data: items });
   } catch (error) {
-    const message = mongoErrorHandler(error);
-    res.status(500).json({ status: 'Error', message });
+    next(error);
   }
 };
 
 const itemDelete = async (req, res) => {
   try {
-    const item = await itemServices.getSingleItem(req.params.id);
-    if (req.user.id != item.ownerId) {
-      return res
-        .status(500)
-        .json({ status: 'Error', message: 'Not authorized!' });
-    }
     const deletedItem = await itemServices.deleteItem(req.params.id);
     res.status(200).json({
       status: 'Success',
       data: deletedItem,
     });
   } catch (error) {
-    const message = mongoErrorHandler(error);
-    res.status(500).json({ status: 'Error', message });
+    next(error);
   }
 };
 
 const itemUpdate = async (req, res) => {
-  const newItem = { ...req.body, ownerId: req.user.id };
-  try {
-    const item = await itemServices.getSingleItem(req.params.id);
-    if (req.user.id != item.ownerId) {
-      return res
-        .status(500)
-        .json({ status: 'Error', message: 'Not authorized!' });
-    }
-    const updatedItem = await itemServices.updateItem(req.params.id, newItem);
-    res.status(200).json({ status: 'Success', data: updatedItem });
-  } catch (error) {
-    const message = mongoErrorHandler(error);
-    res.status(500).json({ status: 'Error', message });
-  }
+  res.send('update route');
 };
 
 router.get('/', middlewares.isGuest, getMyItems);
 router.post('/', middlewares.isGuest, itemCreate);
-router.get('/:id', middlewares.isGuest, getSingleItem);
-router.delete('/:id', middlewares.isGuest, itemDelete);
-router.put('/:id', middlewares.isGuest, itemUpdate);
+router.get('/:id', middlewares.isGuest, middlewares.isOwner, getSingleItem);
+router.delete('/:id', middlewares.isGuest, middlewares.isOwner, itemDelete);
+router.put('/:id', middlewares.isGuest, middlewares.isOwner, itemUpdate);
 
 module.exports = router;

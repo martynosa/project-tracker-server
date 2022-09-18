@@ -1,5 +1,6 @@
 const authServices = require('./authServices');
 const itemServices = require('./itemServices');
+const AppError = require('./errors/AppError');
 
 //sets the currently logged in user
 const auth = async (req, res, next) => {
@@ -14,21 +15,37 @@ const auth = async (req, res, next) => {
     req.user = decodedToken;
     next();
   } catch (error) {
-    res.status(500).json(error.message);
+    next(error);
   }
 };
 
-//blocks non logged users from modifying the items and user and returns error code + message
+//blocks non logged users from acessing data
 const isGuest = (req, res, next) => {
   if (!req.user) {
-    return res.status(500).json('Not logged in!');
+    next(new AppError('Not logged in!', 401));
   }
   next();
+};
+
+//blocks non owners from accessing data
+const isOwner = async (req, res, next) => {
+  const itemId = req.params.id;
+
+  try {
+    const item = await itemServices.getSingleItem(itemId);
+    if (req.user.id !== item.ownerId.toString()) {
+      next(new AppError('Not authorized!', 403));
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
 };
 
 const middlewares = {
   auth,
   isGuest,
+  isOwner,
 };
 
 module.exports = middlewares;

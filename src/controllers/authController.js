@@ -2,48 +2,14 @@ const express = require('express');
 const authServices = require('../services/authServices');
 const itemServices = require('../services/itemServices');
 const middlewares = require('../services/middlewares');
-const uploadProfilePhoto = require('../config/multerConfig');
 const mongoErrorHandler = require('../services/errorServices');
 const multerServices = require('../config/multerConfig');
+const defaultProject = require('../helpers/defaultProject');
 
 const router = express.Router();
 
 const registerUser = async (req, res) => {
   const userToRegister = req.body;
-  const defaultProject = {
-    name: 'Project Mars (Demo)',
-    keywords: ['MARS', 'LANDING', 'HUMANS'],
-    description: 'The first crewed mission to Mars.',
-    status: 'new',
-    tasks: [
-      {
-        task: 'Rover exploration.',
-        key: '1',
-        isCompleted: true,
-      },
-      {
-        task: 'Send base components',
-        key: '2',
-        isCompleted: false,
-      },
-      {
-        task: 'Send crew to Mars.',
-        key: '3',
-        isCompleted: false,
-      },
-      {
-        task: 'Build base.',
-        key: '4',
-        isCompleted: false,
-      },
-      {
-        task: 'Return crew from Mars.',
-        key: '5',
-        isCompleted: false,
-      },
-    ],
-  };
-
   try {
     await authServices.registerUser(userToRegister);
     const loggedUser = await authServices.logUser(userToRegister);
@@ -56,13 +22,14 @@ const registerUser = async (req, res) => {
       status: 'Success',
       data: {
         id: loggedUser._id,
-        username: loggedUser.username,
+        email: loggedUser.email,
         photo: loggedUser.photo,
         token: token,
       },
     });
   } catch (error) {
     const message = mongoErrorHandler(error);
+    console.log(error);
     res.status(500).json({ status: 'Error', message });
   }
 };
@@ -76,7 +43,7 @@ const logUser = async (req, res) => {
       status: 'Success',
       data: {
         id: loggedUser._id,
-        username: loggedUser.username,
+        email: loggedUser.email,
         photo: loggedUser.photo,
         token: token,
       },

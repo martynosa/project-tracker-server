@@ -10,23 +10,23 @@ const registerUser = async (userToRegister) => {
 };
 
 const logUser = async (userToLog) => {
-  const { username, password } = userToLog;
-  const user = await userModel.findOne({ username });
+  const { email, password } = userToLog;
+  const user = await userModel.findOne({ email });
   if (!user || !password) {
-    throw 'Username or Password are invalid!';
+    throw 'Email or Password are invalid!';
   }
   const isValid = await user.validatePassword(password);
   if (!isValid) {
-    throw 'Username or Password are invalid!';
+    throw 'Email or Password are invalid!';
   }
   return user;
 };
 
 const createToken = async (user) => {
-  const { _id, username } = user;
+  const { _id, email } = user;
   const payload = {
     id: _id,
-    username: username,
+    email: email,
   };
   const token = await jwtSign(payload, process.env.SECRET);
   return token;
@@ -34,7 +34,7 @@ const createToken = async (user) => {
 
 const verifyToken = (token) => jwtVerify(token, process.env.SECRET);
 
-const getUser = (id) => userModel.findById(id).populate('createdItems').lean();
+const getUser = (id) => userModel.findById(id).populate('createdItems');
 
 const updateUser = (id, updatedUser) =>
   userModel.findByIdAndUpdate(id, updatedUser, { new: true });

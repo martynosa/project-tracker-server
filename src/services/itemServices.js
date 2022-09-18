@@ -8,8 +8,8 @@ const createItem = (itemToCreate) => itemModel.create(itemToCreate);
 
 const deleteItem = (idToDelete) => itemModel.findByIdAndDelete(idToDelete);
 
-const updateItem = (idToUpdate, newItem) =>
-  itemModel.findByIdAndUpdate(idToUpdate, newItem, {
+const updateItem = (idToUpdate, newData) =>
+  itemModel.findByIdAndUpdate(idToUpdate, newData, {
     runValidators: true,
     new: true,
   });

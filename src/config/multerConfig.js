@@ -9,7 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 //   },
 //   filename: (req, file, cb) => {
 //     const ext = file.mimetype.split('/')[1];
-//     cb(null, `${req.user.username}-${uuidv4()}.${ext}`);
+//     cb(null, `${req.user.email}-${uuidv4()}.${ext}`);
 //   },
 // });
 
@@ -18,7 +18,7 @@ const multerStorage = multer.memoryStorage();
 const resizeProfilePhoto = (req, res, next) => {
   if (!req.file) return next();
 
-  req.file.filename = `${req.user.username}-${uuidv4()}.jpeg`;
+  req.file.filename = `${req.user.email}-${uuidv4()}.jpeg`;
 
   sharp(req.file.buffer)
     .resize(500, 500)

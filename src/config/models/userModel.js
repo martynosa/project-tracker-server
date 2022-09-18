@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-  username: {
+  email: {
     type: String,
     unique: true,
-    required: [true, 'Username is required!'],
-    minlength: [4, 'Username with 4 or more characters required!'],
+    required: [true, 'email is required!'],
+    validate: [/^[^@\s]+@[^@\s]+\.[^@\s]+$/, 'Invalid email address!'],
   },
   password: {
     type: String,
