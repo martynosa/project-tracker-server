@@ -22,6 +22,7 @@ const registerUser = async (req, res, next) => {
       data: {
         id: loggedUser._id,
         email: loggedUser.email,
+        name: loggedUser.name,
         photo: loggedUser.photo,
         token: token,
       },
@@ -41,6 +42,7 @@ const logUser = async (req, res, next) => {
       data: {
         id: loggedUser._id,
         email: loggedUser.email,
+        name: loggedUser.name,
         photo: loggedUser.photo,
         token: token,
       },
@@ -79,6 +81,7 @@ const updatePassword = async (req, res, next) => {
       data: {
         id: loggedUser._id,
         email: loggedUser.email,
+        name: loggedUser.name,
         photo: loggedUser.photo,
         token: token,
       },

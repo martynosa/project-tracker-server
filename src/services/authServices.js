@@ -24,10 +24,11 @@ const logUser = async (userToLog) => {
 };
 
 const createToken = async (user) => {
-  const { _id, email } = user;
+  const { _id, email, name } = user;
   const payload = {
     id: _id,
     email: email,
+    name: name,
   };
   const token = await jwtSign(payload, process.env.SECRET);
   return token;

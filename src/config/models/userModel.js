@@ -5,8 +5,12 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
-    required: [true, 'email is required!'],
+    required: [true, 'Email is required!'],
     validate: [/^[^@\s]+@[^@\s]+\.[^@\s]+$/, 'Invalid email address!'],
+  },
+  name: {
+    type: String,
+    required: [true, 'Name with 3 or more characters required!'],
   },
   password: {
     type: String,
