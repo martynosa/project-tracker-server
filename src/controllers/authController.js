@@ -4,6 +4,7 @@ const itemServices = require('../services/itemServices');
 const middlewares = require('../services/middlewares');
 const multerServices = require('../config/multerConfig');
 const defaultProject = require('../helpers/defaultProject');
+const AppError = require('../services/errors/AppError');
 
 const router = express.Router();
 
@@ -54,7 +55,7 @@ const logUser = async (req, res, next) => {
 
 const profilePhoto = async (req, res, next) => {
   if (!req.file) {
-    next('Not an image file or no file chosen!', 415);
+    next(new AppError('Not an image or no file!', 415));
   }
   try {
     const updatedUser = await authServices.updateUser(req.user.id, {
