@@ -1,5 +1,20 @@
 const mongoose = require('mongoose');
 
+const keywordValidators = [
+  {
+    validator: (array) => {
+      return array.length > 0 && array.length <= 5;
+    },
+    msg: 'Add 1 to 5 keywords!',
+  },
+  {
+    validator: (array) => {
+      return new Set(array).size === array.length;
+    },
+    msg: 'Duplicate keywords!',
+  },
+];
+
 const itemSchema = new mongoose.Schema(
   {
     name: {
@@ -9,12 +24,7 @@ const itemSchema = new mongoose.Schema(
     },
     keywords: {
       type: Array,
-      validate: [
-        (array) => {
-          return array.length > 0 && array.length <= 5;
-        },
-        'Add 1 to 5 keywords!',
-      ],
+      validate: keywordValidators,
     },
     description: {
       type: String,
