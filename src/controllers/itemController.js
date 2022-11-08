@@ -41,8 +41,14 @@ const itemDelete = async (req, res) => {
   }
 };
 
-const itemUpdate = async (req, res) => {
-  res.send('update route');
+const itemUpdate = async (req, res, next) => {
+  const id = req.params.id;
+  try {
+    const updatedItem = await itemServices.updateItem(id, req.body);
+    res.status(200).json({ status: 'success', data: updatedItem });
+  } catch (error) {
+    next(error);
+  }
 };
 
 router.get('/', middlewares.isGuest, getMyItems);
