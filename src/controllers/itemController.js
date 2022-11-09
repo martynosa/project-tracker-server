@@ -35,7 +35,7 @@ const getMyItems = async (req, res) => {
 const itemDelete = async (req, res) => {
   try {
     await itemServices.deleteItem(req.params.id);
-    res.status(204).json({ status: 'success' });
+    res.status(200).json({ status: 'success' });
   } catch (error) {
     next(error);
   }
