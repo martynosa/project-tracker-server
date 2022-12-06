@@ -1,7 +1,6 @@
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
-const cookieParser = require('cookie-parser');
 const initMongoose = require('./config/mongooseConfig');
 const middlewares = require('./services/middlewares');
 const router = require('./router');
@@ -29,7 +28,6 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, token');
   next();
 });
-app.use(cookieParser());
 app.use(middlewares.auth);
 app.use(router);
 app.use(errorHandler);
