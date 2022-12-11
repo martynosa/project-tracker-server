@@ -18,7 +18,8 @@ app.use((req, res, next) => {
   process.env.NODE_ENV === 'production'
     ? res.setHeader(
         'Access-Control-Allow-Origin',
-        'https://martynosa-project-tracker.netlify.app'
+        // 'https://martynosa-project-tracker.netlify.app'
+        '*'
       )
     : res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
