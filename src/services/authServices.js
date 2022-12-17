@@ -14,11 +14,11 @@ const logUser = async (userToLog) => {
   const { email, password } = userToLog;
   const user = await userModel.findOne({ email });
   if (!user || !password) {
-    throw new AppError('Email or Password are invalid!', 401);
+    throw new AppError('Email or Password is invalid!', 401);
   }
   const isValid = await user.validatePassword(password);
   if (!isValid) {
-    throw new AppError('Email or Password are invalid!', 401);
+    throw new AppError('Email or Password is invalid!', 401);
   }
   return user;
 };
@@ -45,7 +45,7 @@ const updatePassword = async (id, passwords) => {
   const { password, newPassword, newRePassword } = passwords;
   const user = await userModel.findById(id);
   if (!user) {
-    throw new AppError('User is invalid', 404);
+    throw new AppError('User is invalid!', 404);
   }
 
   const isValid = await user.validatePassword(password);
