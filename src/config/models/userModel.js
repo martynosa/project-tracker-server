@@ -12,6 +12,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Name with 3 or more characters required!'],
   },
+  photo: {
+    type: String,
+    default: 'default.jpg',
+  },
+  isDark: {
+    type: Boolean,
+    default: true,
+  },
   password: {
     type: String,
     required: [true, 'Password is required!'],
@@ -26,10 +34,6 @@ const userSchema = new mongoose.Schema({
       },
       message: 'Password and Repeat password must be identical!',
     },
-  },
-  photo: {
-    type: String,
-    default: 'default.jpg',
   },
 });
 
