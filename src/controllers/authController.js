@@ -94,9 +94,25 @@ const updatePassword = async (req, res, next) => {
   }
 };
 
+const updateTheme = async (req, res, next) => {
+  const isDark = req.body.isDark;
+  try {
+    const updatedUser = await authServices.updateUser(req.user.id, {
+      isDark,
+    });
+    res.status(200).json({
+      status: 'success',
+      data: updatedUser.isDark,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 router.post('/register', registerUser);
 router.post('/login', logUser);
 router.patch('/updatePassword', middlewares.isGuest, updatePassword);
+router.patch('/updateTheme', middlewares.isGuest, updateTheme);
 router.post(
   '/uploadPhoto',
   middlewares.isGuest,
