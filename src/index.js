@@ -38,4 +38,4 @@ initMongoose()
       console.log(`env = ${process.env.NODE_ENV} and listening on ${PORT}...`)
     )
   )
-  .catch((error) => console.log('mongoose failed:' + error));
+  .catch((error) => console.log('mongoose error:' + error));
