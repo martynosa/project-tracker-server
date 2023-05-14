@@ -25,6 +25,8 @@ const registerUser = async (req, res, next) => {
         email: loggedUser.email,
         name: loggedUser.name,
         photo: loggedUser.photo,
+        isDark: loggedUser.isDark,
+        createdAt: loggedUser.createdAt,
         token: token,
       },
     });
@@ -46,6 +48,8 @@ const logUser = async (req, res, next) => {
         name: loggedUser.name,
         photo: loggedUser.photo,
         isDark: loggedUser.isDark,
+        createdAt: loggedUser.createdAt,
+
         token: token,
       },
     });
