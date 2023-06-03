@@ -1,6 +1,7 @@
 const express = require('express');
 const itemServices = require('../services/itemServices');
 const middlewares = require('../services/middlewares');
+const { v4: uuidv4 } = require('uuid');
 
 const router = express.Router();
 
@@ -51,10 +52,53 @@ const itemUpdate = async (req, res, next) => {
   }
 };
 
+const addTask = async (req, res, next) => {
+  const id = req.params.id;
+  const newTask = { ...req.body, id: uuidv4() };
+  try {
+    const updatedItem = await itemServices.addTask(id, newTask);
+    res.status(200).json({ status: 'success', data: updatedItem });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteTask = async (req, res, next) => {
+  const id = req.params.id;
+  const taskId = req.body.taskId;
+  try {
+    const updatedItem = await itemServices.deleteTask(id, taskId);
+    res.status(200).json({ status: 'success', data: updatedItem });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateTask = async (req, res, next) => {
+  const id = req.params.id;
+  const taskId = req.body.taskId;
+  const isCompleted = req.body.isCompleted;
+
+  try {
+    const updatedItem = await itemServices.updateTask(id, taskId, isCompleted);
+    res.status(200).json({ status: 'success', data: updatedItem });
+  } catch (error) {
+    next(error);
+  }
+};
+
 router.get('/', middlewares.isGuest, getMyItems);
 router.post('/', middlewares.isGuest, itemCreate);
 router.get('/:id', middlewares.isGuest, middlewares.isOwner, getSingleItem);
 router.delete('/:id', middlewares.isGuest, middlewares.isOwner, itemDelete);
 router.put('/:id', middlewares.isGuest, middlewares.isOwner, itemUpdate);
+router.post('/:id/tasks', middlewares.isGuest, middlewares.isOwner, addTask);
+router.delete(
+  '/:id/tasks',
+  middlewares.isGuest,
+  middlewares.isOwner,
+  deleteTask
+);
+router.put('/:id/tasks', middlewares.isGuest, middlewares.isOwner, updateTask);
 
 module.exports = router;

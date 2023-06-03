@@ -32,9 +32,15 @@ const itemSchema = new mongoose.Schema(
       minlength: [10, 'Description with 10 or more characters required!'],
     },
     // FEATURE NOT IMPLEMENTED
-    // tasks: {
-    //   type: Array,
-    // },
+    tasks: {
+      type: [
+        {
+          id: String,
+          description: String,
+          isCompleted: { type: Boolean, default: false },
+        },
+      ],
+    },
     status: {
       type: String,
       required: [true, 'Status is required!'],
