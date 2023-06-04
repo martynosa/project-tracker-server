@@ -54,9 +54,9 @@ const itemUpdate = async (req, res, next) => {
 
 const addTask = async (req, res, next) => {
   const id = req.params.id;
-  const newTask = { ...req.body, id: uuidv4() };
+
   try {
-    const updatedItem = await itemServices.addTask(id, newTask);
+    const updatedItem = await itemServices.addTask(id, req.body);
     res.status(200).json({ status: 'success', data: updatedItem });
   } catch (error) {
     next(error);

@@ -24,7 +24,7 @@ const addTask = (idToUpdate, task) =>
 const deleteTask = (idToUpdate, taskIdToDelete) =>
   itemModel.findByIdAndUpdate(
     idToUpdate,
-    { $pull: { tasks: { id: taskIdToDelete } } },
+    { $pull: { tasks: { _id: taskIdToDelete } } },
     { new: true }
   );
 
@@ -44,7 +44,7 @@ const updateTask = (idToUpdate, taskId, isCompleted) => {
       $set: { 'tasks.$[inner].isCompleted': isCompleted },
     },
     {
-      arrayFilters: [{ 'inner.id': taskId }],
+      arrayFilters: [{ 'inner._id': taskId }],
       new: true,
     }
   );
