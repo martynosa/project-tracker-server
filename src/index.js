@@ -8,7 +8,9 @@ const errorHandler = require("./services/errors/errorHandler");
 
 const PORT = process.env.PORT || 5000;
 
-dotenv.config({ path: "src/config.env" });
+// create .env file with MONGODB_USERNAME, MONGODB_PASSWORD and SECRET in src/
+if (process.env.NODE_ENV === "development") dotenv.config({ path: "src/.env" });
+
 const app = express();
 
 app.use(express.json());
